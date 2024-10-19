@@ -48,7 +48,7 @@ public class Mascota {
     @Column(nullable = true)
     private Boolean chipeado;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "familiar", nullable = false)
     private Usuario familiar;
 
