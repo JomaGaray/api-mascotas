@@ -1,0 +1,19 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/db_araf_V2
+    username: josegaray
+    password: 5404822
+  server:
+    port: 8083
+  loggin:
+    level:
+      root: INFO
+      org.hibernate: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.descriptor.sql: TRUE
+  main:
+    allow-bean-definition-overriding: true
