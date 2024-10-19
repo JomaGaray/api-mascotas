@@ -15,6 +15,5 @@ public interface MascotaMapper {
     @Mapping(source = "familiarId", target = "familiar.id")
     Mascota toEntity(MascotaDTORequest dtoRequest);
 
-    @Mapping(source = "familiar.id", target = "usuario.id")
     MascotaDTODetalle toDTO(Mascota mascota);
 }
