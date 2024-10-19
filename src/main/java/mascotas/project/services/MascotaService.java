@@ -7,6 +7,7 @@ import mascotas.project.dto.MascotaDTODetalle;
 import mascotas.project.dto.MascotaDTORequest;
 import mascotas.project.dto.MascotaDTOSaveSucces;
 import mascotas.project.entities.Mascota;
+import mascotas.project.entities.Usuario;
 import mascotas.project.mapper.MascotaMapper;
 import mascotas.project.repositories.MascotaRepository;
 import mascotas.project.repositories.UsuarioRepository;
@@ -34,7 +35,7 @@ public class MascotaService {
         usuarioRepository.findById(mascotaDTORequest.getFamiliarId())
                          .orElseThrow(() -> new ChangeSetPersister.NotFoundException()); //TODO: implementar las excepciones
 
-        Mascota mascota = mascotaMapper.INSTANCE.toEntity(mascotaDTORequest);
+        Mascota mascota = mascotaMapper.toEntity(mascotaDTORequest);
         mascota = mascotaRepository.save(mascota);
 
         //retorno la mascota persistida
@@ -51,19 +52,19 @@ public class MascotaService {
         Mascota mascota = mascotaRepository.findById(id)
                                            .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
-        return MascotaMapper.INSTANCE.toDTO(mascota);
+        return mascotaMapper.toDTO(mascota);
     }
 
 
     public List<MascotaDTODetalle> getMascotasByFamiliarId(Long usuarioId) throws ChangeSetPersister.NotFoundException {
 
-        usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
+       usuarioRepository.findById(usuarioId)
+                        .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
         return mascotaRepository.findByFamiliarId(usuarioId)
-                .stream()
-                .map(mascotaMapper::toDTO)
-                .toList();
+                                .stream()
+                                .map(mascotaMapper::toDTO)
+                                .toList();
     }
 
 

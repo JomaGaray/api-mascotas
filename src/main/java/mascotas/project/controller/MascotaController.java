@@ -11,6 +11,8 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/mascotas")
 @Slf4j
@@ -29,6 +31,12 @@ public class MascotaController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<MascotaDTODetalle> getMascotabyID(@PathVariable(name="id", required = true) Long idMascota) throws ChangeSetPersister.NotFoundException {
         MascotaDTODetalle mascota = mascotaService.getMascotaById(idMascota);
+        return ResponseEntity.ok().body(mascota);
+    }
+
+    @GetMapping(value = "/user/{userId}")
+    public ResponseEntity<List<MascotaDTODetalle>> getMascotasByFamiliarId(@PathVariable(name="userId", required = true) Long idUser) throws ChangeSetPersister.NotFoundException {
+        List<MascotaDTODetalle> mascota = mascotaService.getMascotasByFamiliarId(idUser);
         return ResponseEntity.ok().body(mascota);
     }
 

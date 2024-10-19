@@ -22,5 +22,4 @@ public class MascotaDTODetalle {
     private LocalDate fNacimiento;
     private Boolean esterilizado;
     private Boolean chipeado;
-    private UsuarioDTO usuario;
 }
