@@ -2,43 +2,38 @@ package mascotas.project.services;
 
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mascotas.project.dto.MascotaDTODetalle;
 import mascotas.project.dto.MascotaDTORequest;
 import mascotas.project.dto.MascotaDTOSaveSucces;
 import mascotas.project.entities.Mascota;
-import mascotas.project.entities.Usuario;
 import mascotas.project.mapper.MascotaMapper;
 import mascotas.project.repositories.MascotaRepository;
 import mascotas.project.repositories.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class MascotaService {
 
-    @Autowired
-    MascotaRepository mascotaRepository;
-    @Autowired
-    UsuarioRepository usuarioRepository;
-
-    @Autowired
-    MascotaMapper mascotaMapper;
+    private MascotaRepository mascotaRepository;
+    private UsuarioRepository usuarioRepository;
+    private MascotaMapper mascotaMapper;
 
 
     @Transactional
     public MascotaDTOSaveSucces saveMascota(MascotaDTORequest mascotaDTORequest) throws ChangeSetPersister.NotFoundException {
 
         usuarioRepository.findById(mascotaDTORequest.getFamiliarId())
-                         .orElseThrow(() -> new ChangeSetPersister.NotFoundException()); //TODO: implementar las excepciones
+                         .orElseThrow(ChangeSetPersister.NotFoundException::new); //TODO: implementar las excepciones
 
         Mascota mascota = mascotaMapper.toEntity(mascotaDTORequest);
         mascota = mascotaRepository.save(mascota);
 
-        //retorno la mascota persistida
         return MascotaDTOSaveSucces.builder()
                                    .id(mascota.getId())
                                    .nombre(mascota.getNombre())
@@ -66,6 +61,8 @@ public class MascotaService {
                                 .map(mascotaMapper::toDTO)
                                 .toList();
     }
+
+    //implementar servicio para declarar a la mascota perdida
 
 
 
