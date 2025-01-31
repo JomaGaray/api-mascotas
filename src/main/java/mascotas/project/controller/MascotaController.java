@@ -1,6 +1,7 @@
 package mascotas.project.controller;
 
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mascotas.project.dto.MascotaDTODetalle;
 import mascotas.project.dto.MascotaDTORequest;
@@ -16,13 +17,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/mascotas")
 @Slf4j
+@AllArgsConstructor
 public class MascotaController {
 
-    @Autowired
     private MascotaService mascotaService;
 
     @PostMapping
     public ResponseEntity<MascotaDTOSaveSucces> saveMascota(@RequestBody MascotaDTORequest mascotaDTORequest) throws ChangeSetPersister.NotFoundException {
+        MascotaDTOSaveSucces mascota = mascotaService.saveMascota(mascotaDTORequest);
+        return  ResponseEntity.ok().body(mascota);
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<MascotaDTOSaveSucces> editMascota(@RequestBody MascotaDTORequest mascotaDTORequest) throws ChangeSetPersister.NotFoundException {
         MascotaDTOSaveSucces mascota = mascotaService.saveMascota(mascotaDTORequest);
         return  ResponseEntity.ok().body(mascota);
     }
