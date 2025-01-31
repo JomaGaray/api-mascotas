@@ -2,7 +2,6 @@ package mascotas.project.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 

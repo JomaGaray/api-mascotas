@@ -11,7 +11,7 @@ public class Adopcion {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adopcion_id_seq")
     @SequenceGenerator(name = "adopcion_id_seq", sequenceName = "adopcion_id_seq", allocationSize = 1)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "administrador")
