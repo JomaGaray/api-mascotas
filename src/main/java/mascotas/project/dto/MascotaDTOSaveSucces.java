@@ -3,7 +3,6 @@ package mascotas.project.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Setter
 public class MascotaDTORequest {
 
-    private Long id;
     private Long familiarId;
     private String nombre;
     private String especie;
