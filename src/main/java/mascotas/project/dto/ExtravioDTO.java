@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,9 +16,11 @@ import java.time.LocalDate;
 public class ExtravioDTO {
 
     private Long creador;
-    private Long idMascota;
+    private Long mascotaId;
     private String zona;
-    private LocalDate hora;
+    private LocalDateTime hora;
+    private String observacion;
+    private Boolean atencionMedica;
 
     /*private LocalDate tiempoGracia;
     private Boolean atencionMedica;*/

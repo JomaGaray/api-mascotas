@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mascotas.project.dto.ExtravioDTO;
+import mascotas.project.entities.Extravio;
+import mascotas.project.entities.Mascota;
 import mascotas.project.mapper.ExtravioMapper;
 import mascotas.project.repositories.ExtravioRepository;
 import mascotas.project.repositories.MascotaRepository;
@@ -28,24 +30,33 @@ public class ExtravioService {
         Optional.of(extravioDto)
                 .map(
                     extravioDTO -> {
+                            //busco la mascota
+                            mascotaRepository.findById(extravioDTO.getMascotaId())
+                                                .map(
+                                                        mascota -> {
+                                                            log.info("SAVE_EXTRAVIO :Mascota id {}, nombre {}", mascota.getId(), mascota.getNombre());
+                                                            return mascota;
+                                                        }
+                                                )
+                                             .orElseThrow( () -> new IllegalArgumentException("No se encontró la mascota con ID: " + extravioDto.getMascotaId()) );
 
-                            mascotaRepository.findById(extravioDTO.getIdMascota())
-                                             .orElseThrow(
-                                                    () -> new IllegalArgumentException("No se encontró la mascota con ID: " + extravioDto.getIdMascota())
-                                             );
-
+                            //busco el usuario
                             usuarioRepository.findById(extravioDto.getCreador())
-                                             .orElseThrow(
-                                                    () -> new IllegalArgumentException("No se encontró al usuario con ID: " + extravioDto.getCreador())
-                                             );
+                                                .map(usuario -> {
+                                                            log.info("SAVE_EXTRAVIO :Usuario id {}, nombre {}", usuario.getId(), usuario.getNombre());
+                                                            return usuario;
+                                                        }
+                                                )
+                                             .orElseThrow( () -> new IllegalArgumentException("No se encontró al usuario con ID: " + extravioDto.getCreador()) );
 
-                           return extravioMapper.toEntity(extravioDto);
+                           return extravioMapper.toEntity(extravioDto); //mapeo el dto
                     }
-                ).map(
+                )
+                .map(
                         extravioEntity -> {
-                            log.info("SAVE_EXTRAVIO : publicador:{} ; nombre Mascota{}" , extravioEntity.getCreador().getNombre(), extravioEntity.getMascota().getNombre());
-                            extravioRepository.save(extravioEntity);
-                            return null;
+                            Extravio extravio =  extravioRepository.save(extravioEntity);
+                            log.info("SAVE_EXTRAVIO : publicador ID:{} ; mascota ID:{} ; idExtravio:{}" , extravioEntity.getCreador(), extravioEntity.getMascota(), extravio.getId());
+                            return extravio;
                         }
                 );
     }

@@ -2,15 +2,14 @@ package mascotas.project.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@ToString
+@Builder
 @Entity
+@Getter
+@Setter
 @Table(name = "companiero", schema = "public")
 public class Mascota {
 

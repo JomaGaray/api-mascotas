@@ -9,11 +9,11 @@ import org.mapstruct.Mapping;
 public interface AdopcionMapper {
 
     @Mapping(target="mascota.id", source="adopcionDTO.mascotaId")
-    @Mapping(target="administrador.id", source="adopcionDTO.administradorId")
+    @Mapping(target="administrador.id", source="adopcionDTO.publicador")
     Adopcion toEntity (AdopcionDTO adopcionDTO);
 
 
-    @Mapping(target="mascotaId", source="mascota.id")
-    @Mapping(target="administradorId", source="administrador.id")
-    AdopcionDTO toDto (Adopcion adopcionEntity);
+    /*@Mapping(target="mascotaId", source="mascota.id")
+    @Mapping(target="publicador", source="administrador.id")
+    AdopcionDTO toDto (Adopcion adopcionEntity);*/
 }

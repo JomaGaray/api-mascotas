@@ -4,37 +4,38 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDateTime;
 
-import java.time.LocalDate;
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "Extravio")
+@Getter
+@Setter
+@Table(name = "extravio")
 public class Extravio {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adopcion_id_seq")
     @SequenceGenerator(name = "adopcion_id_seq", sequenceName = "adopcion_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "creador_id")
-    private Usuario creador;
+    private Long creador;
 
-    @ManyToOne
-    @JoinColumn(name = "mascota_id")
-    private Mascota mascota;
+    private Long mascota;
 
     private String zona;
 
-    private LocalDate hora;
+    private LocalDateTime hora;
 
-    private LocalDate tiempo_gracia;
+    private LocalDateTime tiempo_gracia;
 
     private Boolean atencion_medica;
+
+    private String observacion;
 
 }

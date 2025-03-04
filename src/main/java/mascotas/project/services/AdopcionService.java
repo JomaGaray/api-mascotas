@@ -39,7 +39,7 @@ public class AdopcionService {
 
                             //verifico que el publicador sea familiar del animal
                             return Optional.of(mascota)
-                                           .filter(m -> Objects.equals( m.getFamiliar().getId(), adopcionDtoRequest.getPublicador() ))
+                                           //.filter(m -> Objects.equals( m.getFamiliar().getId(), adopcionDtoRequest.getPublicador() ))
                                            .map(m -> adopcionMapper.toEntity(adopcionDtoRequest))
                                            .orElseThrow(
                                                     () -> new IllegalArgumentException("El publicador no es familiar de la mascota")

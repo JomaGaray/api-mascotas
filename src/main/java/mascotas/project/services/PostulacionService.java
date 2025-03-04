@@ -8,7 +8,6 @@ import mascotas.project.mapper.PostulacionMapper;
 import mascotas.project.repositories.AdopocionRepository;
 import mascotas.project.repositories.PostulacionRepository;
 import mascotas.project.repositories.UsuarioRepository;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,37 +24,54 @@ public class PostulacionService {
     private PostulacionMapper postulacionMapper;
 
 
-    public PostulacionDTO savePostulacion(PostulacionDTO postulacion){
+    public Postulacion savePostulacion(PostulacionDTO postulacion){
 
-        Postulacion postulacionToPersist = Optional.ofNullable(postulacion)
-                                           .map(
-                                                    p -> {
-                                                        usuarioRepository.findById(p.getUsuario())
-                                                                         .orElseThrow(
-                                                                                 //()->new
-                                                                         )
+        return Optional.of(postulacion)
+                     .map(
+                            p -> {
+                                usuarioRepository.findById(p.getUsuario())
+                                                 .orElseThrow(
+                                                         () -> new IllegalArgumentException("No se encontró al usuario con ID: " + postulacion.getUsuario())
+                                                 );
 
-                                                        adopcionRepository.findById(p.getAdopcion())
-                                                                            .orElseThrow(
-                                                                                    //()->
-                                                                            )
+                                adopcionRepository.findById(p.getAdopcion())
+                                                    .orElseThrow(
+                                                            () -> new IllegalArgumentException("No se encontró la adopcion con ID: " + postulacion.getAdopcion())
+                                                    );
 
-                                                                //hacer esto en el mapper
-                                                        return Postulacion.builder()
-                                                                          .usuario(usuario)
-                                                                          .adopcion(adopcion)
-                                                                          .fecha(postulacion.getFecha());
-                                                    }
-                                           )
-                                            .map(postulacionRepository::save)
-                                            .orElseThrow(ChangeSetPersister.NotFoundException::new);
+                                return postulacionMapper.toPostulacionEntity(postulacion);
+                            }
+                     )
+                     .map(
+                            postulacionEntity -> {
+                                Postulacion postulacionPersistida =  postulacionRepository.save(postulacionEntity);
 
-        return postulacionMapper.toPostulacionDTO(postulacionToPersist);
-
+                                log.info("POSTULACION_SERVICE - postulacion persistida ID: {} ", postulacionPersistida.getId() );
+                                return postulacionPersistida;
+                            }
+                     ).orElseThrow( RuntimeException::new );
     }
 
 
-    public List<PostulacionDTO> getAllPostulaciones(){}
+    public List<PostulacionDTO> getAllPostulacionesByUsuario(Long  usuarioId){
 
-    //crear servicio de MIS postulaciones
+       return Optional.of(usuarioId)
+                .map(
+                        usuario ->{
+
+                                usuarioRepository.findById(usuario)
+                                                 .orElseThrow(
+                                                           () -> new IllegalArgumentException("No se encontró al usuario con ID: " + usuarioId)
+                                                 );
+
+                           return postulacionRepository.findPostulacionesByUsuarioId(usuarioId)
+                                    .orElseThrow(
+                                            () -> new IllegalArgumentException("No se encontraron posutlaciones para el usuario con ID: " + usuarioId)
+                                    );
+                        }
+                )
+                .map(
+                        postulaciones -> postulacionMapper.toPostulacionDTOList(postulaciones)
+                ).orElseThrow(RuntimeException::new);
+    }
 }

@@ -1,11 +1,11 @@
 package mascotas.project.controller;
 
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mascotas.project.dto.AdopcionDTO;
 import mascotas.project.entities.Adopcion;
 import mascotas.project.services.AdopcionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/adopciones")
 @Slf4j
+@AllArgsConstructor
 public class AdopcionController {
 
-    @Autowired
     private AdopcionService adopcionService;
 
     @PostMapping
