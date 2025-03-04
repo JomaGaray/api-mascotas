@@ -3,15 +3,16 @@ package mascotas.project.services;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mascotas.project.dto.ExtravioDTO;
+import mascotas.project.dto.ExtravioDetailDTO;
+import mascotas.project.dto.ExtravioRequestDTO;
 import mascotas.project.entities.Extravio;
-import mascotas.project.entities.Mascota;
 import mascotas.project.mapper.ExtravioMapper;
 import mascotas.project.repositories.ExtravioRepository;
 import mascotas.project.repositories.MascotaRepository;
 import mascotas.project.repositories.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class ExtravioService {
     private ExtravioRepository extravioRepository;
 
     @Transactional
-    public void saveExtravio(ExtravioDTO extravioDto) {
+    public void saveExtravio(ExtravioRequestDTO extravioDto) {
 
         Optional.of(extravioDto)
                 .map(
@@ -59,5 +60,24 @@ public class ExtravioService {
                             return extravio;
                         }
                 );
+    }
+
+
+
+    public List<ExtravioDetailDTO> getAllExtraviosByUsuario(Long  usuarioId){
+
+        return Optional.of(usuarioId)
+                .map(
+                        usuario ->{
+
+                            usuarioRepository.findById(usuario)
+                                                .orElseThrow(
+                                                        () -> new IllegalArgumentException("No se encontró al usuario con ID: " + usuarioId)
+                                                );
+
+                            return extravioRepository.findAllByCreador(usuarioId);
+                        }
+                )
+                .orElseThrow(RuntimeException::new);
     }
 }
