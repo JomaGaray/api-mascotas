@@ -28,4 +28,11 @@ public class UsuarioService {
         return  usuarioMapper.toUsuarioDto(usuario);
     }
 
+    @Transactional
+    public UsuarioDTO createUsuario(UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+        Usuario savedUsuario = usuarioRepository.save(usuario);
+        return usuarioMapper.toUsuarioDto(savedUsuario);
+    }
+
 }
